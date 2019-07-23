@@ -6,6 +6,7 @@ type Article {
   title: String
   content: String
   category: ENUM_ARTICLE_CATEGORY
+  tet: String
 }
 
 type ArticleAggregator {
@@ -44,6 +45,11 @@ type ArticleConnectionId {
   connection: ArticleConnection
 }
 
+type ArticleConnectionTet {
+  key: String
+  connection: ArticleConnection
+}
+
 type ArticleConnectionTitle {
   key: String
   connection: ArticleConnection
@@ -62,12 +68,14 @@ type ArticleGroupBy {
   title: [ArticleConnectionTitle]
   content: [ArticleConnectionContent]
   category: [ArticleConnectionCategory]
+  tet: [ArticleConnectionTet]
 }
 
 input ArticleInput {
   title: String
   content: String
   category: ENUM_ARTICLE_CATEGORY
+  tet: String
 }
 
 input createArticleInput {
@@ -84,6 +92,22 @@ input createRoleInput {
 
 type createRolePayload {
   role: UsersPermissionsRole
+}
+
+input createTestInput {
+  data: TestInput
+}
+
+type createTestPayload {
+  test: Test
+}
+
+input createTitleInput {
+  data: TitleInput
+}
+
+type createTitlePayload {
+  title: Title
 }
 
 input createUserInput {
@@ -115,6 +139,22 @@ type deleteRolePayload {
   role: UsersPermissionsRole
 }
 
+input deleteTestInput {
+  where: InputID
+}
+
+type deleteTestPayload {
+  test: Test
+}
+
+input deleteTitleInput {
+  where: InputID
+}
+
+type deleteTitlePayload {
+  title: Title
+}
+
 input deleteUserInput {
   where: InputID
 }
@@ -127,6 +167,7 @@ input editArticleInput {
   title: String
   content: String
   category: ENUM_ARTICLE_CATEGORY
+  tet: String
 }
 
 input editFileInput {
@@ -148,6 +189,14 @@ input editRoleInput {
   type: String
   permissions: [ID]
   users: [ID]
+}
+
+input editTestInput {
+  test: Int
+}
+
+input editTitleInput {
+  title: String
 }
 
 input editUserInput {
@@ -192,12 +241,18 @@ scalar JSON
 """The `Long` scalar type represents 52-bit integers"""
 scalar Long
 
-union Morph = UsersPermissionsMe | UsersPermissionsMeRole | Article | createArticlePayload | updateArticlePayload | deleteArticlePayload | ArticleConnection | ArticleAggregator | ArticleGroupBy | ArticleConnection_id | ArticleConnectionId | ArticleConnectionCreatedAt | ArticleConnectionUpdatedAt | ArticleConnectionTitle | ArticleConnectionContent | ArticleConnectionCategory | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileGroupBy | UploadFileConnection_id | UploadFileConnectionId | UploadFileConnectionCreatedAt | UploadFileConnectionUpdatedAt | UploadFileConnectionName | UploadFileConnectionHash | UploadFileConnectionSha256 | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionProvider | UploadFileConnectionPublic_id | UsersPermissionsPermission | UsersPermissionsRole | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnection_id | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | UsersPermissionsUser | createUserPayload | updateUserPayload | deleteUserPayload | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnection_id | UsersPermissionsUserConnectionId | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole
+union Morph = UsersPermissionsMe | UsersPermissionsMeRole | Article | createArticlePayload | updateArticlePayload | deleteArticlePayload | ArticleConnection | ArticleAggregator | ArticleGroupBy | ArticleConnection_id | ArticleConnectionId | ArticleConnectionCreatedAt | ArticleConnectionUpdatedAt | ArticleConnectionTitle | ArticleConnectionContent | ArticleConnectionCategory | ArticleConnectionTet | Test | createTestPayload | updateTestPayload | deleteTestPayload | TestConnection | TestAggregator | TestAggregatorSum | TestAggregatorAvg | TestAggregatorMin | TestAggregatorMax | TestGroupBy | TestConnection_id | TestConnectionId | TestConnectionCreatedAt | TestConnectionUpdatedAt | TestConnectionTest | Title | createTitlePayload | updateTitlePayload | deleteTitlePayload | TitleConnection | TitleAggregator | TitleGroupBy | TitleConnection_id | TitleConnectionId | TitleConnectionCreatedAt | TitleConnectionUpdatedAt | TitleConnectionTitle | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileGroupBy | UploadFileConnection_id | UploadFileConnectionId | UploadFileConnectionCreatedAt | UploadFileConnectionUpdatedAt | UploadFileConnectionName | UploadFileConnectionHash | UploadFileConnectionSha256 | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionProvider | UploadFileConnectionPublic_id | UsersPermissionsPermission | UsersPermissionsRole | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnection_id | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | UsersPermissionsUser | createUserPayload | updateUserPayload | deleteUserPayload | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnection_id | UsersPermissionsUserConnectionId | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole
 
 type Mutation {
   createArticle(input: createArticleInput): createArticlePayload
   updateArticle(input: updateArticleInput): updateArticlePayload
   deleteArticle(input: deleteArticleInput): deleteArticlePayload
+  createTest(input: createTestInput): createTestPayload
+  updateTest(input: updateTestInput): updateTestPayload
+  deleteTest(input: deleteTestInput): deleteTestPayload
+  createTitle(input: createTitleInput): createTitlePayload
+  updateTitle(input: updateTitleInput): updateTitlePayload
+  deleteTitle(input: deleteTitleInput): deleteTitlePayload
 
   """Create a new role"""
   createRole(input: createRoleInput): createRolePayload
@@ -223,6 +278,12 @@ type Query {
   article(id: ID!): Article
   articles(sort: String, limit: Int, start: Int, where: JSON): [Article]
   articlesConnection(sort: String, limit: Int, start: Int, where: JSON): ArticleConnection
+  test(id: ID!): Test
+  tests(sort: String, limit: Int, start: Int, where: JSON): [Test]
+  testsConnection(sort: String, limit: Int, start: Int, where: JSON): TestConnection
+  title(id: ID!): Title
+  titles(sort: String, limit: Int, start: Int, where: JSON): [Title]
+  titlesConnection(sort: String, limit: Int, start: Int, where: JSON): TitleConnection
   files(sort: String, limit: Int, start: Int, where: JSON): [UploadFile]
   filesConnection(sort: String, limit: Int, start: Int, where: JSON): UploadFileConnection
   role(id: ID!): UsersPermissionsRole
@@ -246,6 +307,139 @@ input RoleInput {
   users: [ID]
 }
 
+"""test"""
+type Test {
+  _id: ID!
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  test: Int
+}
+
+type TestAggregator {
+  count: Int
+  totalCount: Int
+  sum: TestAggregatorSum
+  avg: TestAggregatorAvg
+  min: TestAggregatorMin
+  max: TestAggregatorMax
+}
+
+type TestAggregatorAvg {
+  test: Float
+}
+
+type TestAggregatorMax {
+  test: Float
+}
+
+type TestAggregatorMin {
+  test: Float
+}
+
+type TestAggregatorSum {
+  test: Float
+}
+
+type TestConnection {
+  values: [Test]
+  groupBy: TestGroupBy
+  aggregate: TestAggregator
+}
+
+type TestConnection_id {
+  key: ID
+  connection: TestConnection
+}
+
+type TestConnectionCreatedAt {
+  key: DateTime
+  connection: TestConnection
+}
+
+type TestConnectionId {
+  key: ID
+  connection: TestConnection
+}
+
+type TestConnectionTest {
+  key: Int
+  connection: TestConnection
+}
+
+type TestConnectionUpdatedAt {
+  key: DateTime
+  connection: TestConnection
+}
+
+type TestGroupBy {
+  _id: [TestConnection_id]
+  id: [TestConnectionId]
+  createdAt: [TestConnectionCreatedAt]
+  updatedAt: [TestConnectionUpdatedAt]
+  test: [TestConnectionTest]
+}
+
+input TestInput {
+  test: Int
+}
+
+type Title {
+  _id: ID!
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String
+}
+
+type TitleAggregator {
+  count: Int
+  totalCount: Int
+}
+
+type TitleConnection {
+  values: [Title]
+  groupBy: TitleGroupBy
+  aggregate: TitleAggregator
+}
+
+type TitleConnection_id {
+  key: ID
+  connection: TitleConnection
+}
+
+type TitleConnectionCreatedAt {
+  key: DateTime
+  connection: TitleConnection
+}
+
+type TitleConnectionId {
+  key: ID
+  connection: TitleConnection
+}
+
+type TitleConnectionTitle {
+  key: String
+  connection: TitleConnection
+}
+
+type TitleConnectionUpdatedAt {
+  key: DateTime
+  connection: TitleConnection
+}
+
+type TitleGroupBy {
+  _id: [TitleConnection_id]
+  id: [TitleConnectionId]
+  createdAt: [TitleConnectionCreatedAt]
+  updatedAt: [TitleConnectionUpdatedAt]
+  title: [TitleConnectionTitle]
+}
+
+input TitleInput {
+  title: String
+}
+
 input updateArticleInput {
   where: InputID
   data: editArticleInput
@@ -262,6 +456,24 @@ input updateRoleInput {
 
 type updateRolePayload {
   role: UsersPermissionsRole
+}
+
+input updateTestInput {
+  where: InputID
+  data: editTestInput
+}
+
+type updateTestPayload {
+  test: Test
+}
+
+input updateTitleInput {
+  where: InputID
+  data: editTitleInput
+}
+
+type updateTitlePayload {
+  title: Title
 }
 
 input updateUserInput {

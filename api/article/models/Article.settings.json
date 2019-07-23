@@ -22,6 +22,9 @@
         "life"
       ],
       "type": "enumeration"
+    },
+    "tet": {
+      "type": "text"
     }
   }
 }
